@@ -1,0 +1,9 @@
+Package: com.tronghieu.mbnotifier
+Name: MB Bank Notifier (RootHide)
+Depends: mobilesubstrate (>= 0.9.5000), firmware (>= 15.0)
+Version: 1.0.0
+Architecture: iphoneos-arm64e
+Description: Tu dong bat bien dong so du MB Bank gui ve Server
+Maintainer: Nguyen Trong Hieu
+Author: Nguyen Trong Hieu
+Section: Tweaks

@@ -1,0 +1,55 @@
+name: Build MBNotifier DEB
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Tweak (.deb)
+    runs-on: macos-14
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Theos (RootHide)
+        uses: waruhachi/theos-action@v2.4.10
+        with:
+          theos-src: 'roothide/theos'
+          theos-branch: 'master'
+          sdks-src: 'theos/sdks'
+          sdks-branch: 'master'
+
+      - name: Build RootHide DEB
+        run: |
+          make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=roothide
+          mkdir -p output
+          cp packages/*.deb output/com.tronghieu.mbnotifier_1.0.0_iphoneos-arm64e.deb
+
+      - name: List Output Files
+        run: |
+          ls -la output/
+          dpkg-deb -I output/*.deb
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: MBNotifier-RootHide-deb
+          path: output/*.deb
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/master')
+        with:
+          tag_name: v1.0.0
+          name: MBNotifier v1.0.0 (RootHide - iPhone 13 Pro Max)
+          body: |
+            ### 🏦 MBNotifier v1.0.0 RootHide
+            - Package: com.tronghieu.mbnotifier
+            - Architecture: iphoneos-arm64e
+            - Filter: com.apple.springboard
+          files: output/*.deb
