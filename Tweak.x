@@ -10,7 +10,7 @@
 @property (nonatomic, strong, readonly) NCNotificationContent *content;
 @end
 
-static NSString * const kServerEndpoint = @"https://hieu-live.duckdns.org/bank-notify";
+static NSString * const kServerEndpoint = @"https://tweaks-factory.duckdns.org/bank-notify";
 static NSString * const kSecretKey = @"tweak_bank_secret_2026";
 static NSString * const kTargetBundleID = @"com.mbmobile";
 
